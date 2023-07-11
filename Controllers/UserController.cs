@@ -14,16 +14,26 @@ namespace ParonAPI.Controllers
             _userRepository = userRepository;
         }
 
-        [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<User>))]
-        public IActionResult GetUsers()
+        [HttpGet("loginMobile/{username}/{password}")]
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(400)]
+        public IActionResult LoginMobile(string username, string password)
         {
-            var users = _userRepository.GetUsers();
-
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+            bool loginResult = _userRepository.LoginMobile(username, password);
+            return Ok(loginResult);
+        }
 
-            return Ok(users);
+        [HttpGet("logoutMobile/{username}/{password}")]
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(400)]
+        public IActionResult LogoutMobile(string username, string password)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            bool logoutResult = _userRepository.LogoutMobile(username, password);
+            return Ok(logoutResult);
         }
     }
 }
