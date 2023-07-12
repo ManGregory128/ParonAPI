@@ -12,6 +12,15 @@ namespace ParonAPI.Repositories
             _context = context;
         }
 
+        public bool ChangePassword(string username, string oldPassword, string newPassword)
+        {
+            var user = _context.Users.Where(p => p.Username == username && p.Password == oldPassword).FirstOrDefault();
+            if (user == null) { return false; }
+            user.Password = newPassword;
+            _context.SaveChanges();
+            return true;
+        }
+
         public ICollection<User> GetUsers()
         {
             return _context.Users.OrderBy(p => p.Username).ToList();

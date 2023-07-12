@@ -35,5 +35,16 @@ namespace ParonAPI.Controllers
             bool logoutResult = _userRepository.LogoutMobile(username, password);
             return Ok(logoutResult);
         }
+
+        [HttpGet("changePassword/{username}/{oldPassword}/{newPassword}")]
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(400)]
+        public IActionResult ChangePassword(string username, string oldPassword, string newPassword)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            bool result = _userRepository.ChangePassword(username, oldPassword, newPassword);
+            return Ok(result);
+        }
     }
 }

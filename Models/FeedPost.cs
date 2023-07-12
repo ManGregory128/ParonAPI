@@ -11,6 +11,7 @@
         {
             this.Username = username;
             this.PostText = postText;
+            this.DateTimePosted = DateTime.Now;
         }
     }
 }
