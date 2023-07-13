@@ -1,0 +1,33 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  DOCKER_HUB_USERNAME: mangregory
+  DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_KEY }}
+  DOCKER_IMAGE_NAME: mangregory/paron-api
+  DOCKER_IMAGE_TAG: latest
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker build --rm -t ${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }} .
+
+      - name: Log in to Docker Hub
+        run: docker login --username ${{ env.DOCKER_HUB_USERNAME }} --password-stdin
+        env:
+          DOCKER_HUB_PASSWORD: ${{ env.DOCKER_HUB_KEY }}
+
+      - name: Push Docker image to Docker Hub
+        run: |
+          docker tag ${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }} ${{ env.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }}
+          docker push ${{ env.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }}
