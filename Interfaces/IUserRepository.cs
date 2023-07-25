@@ -9,8 +9,10 @@ namespace ParonAPI.Interfaces
 
         bool LoginMobile(string username, string password);
 
-        bool LogoutMobile(string username, string password);
+        bool Logout(string username, string password);
 
         bool ChangePassword(string username, string oldPassword, string newPassword);
+        
+        char LoginDesktop(string username, string password);
     }
 }

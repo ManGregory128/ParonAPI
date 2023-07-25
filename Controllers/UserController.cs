@@ -25,14 +25,25 @@ namespace ParonAPI.Controllers
             return Ok(loginResult);
         }
 
-        [HttpGet("logoutMobile/{username}/{password}")]
+        [HttpGet("loginDesktop/{username}/{password}")]
         [ProducesResponseType(200, Type = typeof(bool))]
         [ProducesResponseType(400)]
-        public IActionResult LogoutMobile(string username, string password)
+        public IActionResult LoginDesktop(string username, string password)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            bool logoutResult = _userRepository.LogoutMobile(username, password);
+            char loginResult = _userRepository.LoginDesktop(username, password);
+            return Ok(loginResult);
+        }
+
+        [HttpGet("logout/{username}/{password}")]
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(400)]
+        public IActionResult Logout(string username, string password)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            bool logoutResult = _userRepository.Logout(username, password);
             return Ok(logoutResult);
         }
 

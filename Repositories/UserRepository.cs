@@ -26,6 +26,20 @@ namespace ParonAPI.Repositories
             return _context.Users.OrderBy(p => p.Username).ToList();
         }
 
+        public char LoginDesktop(string username, string password)
+        {
+            var user = _context.Users.Where(p => p.Username == username && p.Password == password && (p.Role == 'a' || p.Role == 's')).FirstOrDefault();
+            if (user == null) { return 'n'; }
+            if (user.Username == username && user.Password == password)
+            {
+                user.IsLoggedIn = true;
+                _context.SaveChanges();
+                if (user.Role == 'a') return 'a';
+                else return 's';
+            }
+            return 'n';
+        }
+
         public bool LoginMobile(string username, string password)
         {
             var user = _context.Users.Where(p => p.Username == username && p.Password == password && p.Role == 't').FirstOrDefault();
@@ -38,7 +52,7 @@ namespace ParonAPI.Repositories
             }
             return false;
         }
-        public bool LogoutMobile(string username, string password)
+        public bool Logout(string username, string password)
         {
             var user = _context.Users.Where(p => p.Username == username && p.Password == password && p.Role == 't').FirstOrDefault();
             if (user == null) { return false; }
